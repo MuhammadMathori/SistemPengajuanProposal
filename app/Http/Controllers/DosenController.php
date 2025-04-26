@@ -6,6 +6,7 @@ use App\Jobs\ImportDosenExcel;
 use App\Models\Dosen;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use RealRashid\SweetAlert\Facades\Alert;
 
 class DosenController extends Controller
@@ -26,7 +27,7 @@ class DosenController extends Controller
         $validated = $request->validate([
             'nama' => 'required|string|max:255',
             'nip' => 'required|string|max:20|unique:dosen,nip',
-            'email' => 'required|email|unique:users,email',
+            'email' => 'required',
             'password' => 'required',
             'kontak' => 'required',
         ]);
@@ -81,6 +82,9 @@ class DosenController extends Controller
 
     public function destroy(Dosen $dosen)
     {
+        if ($dosen->dosen_id) {
+            Storage::delete($dosen->dosen_id);
+        }
         $user = $dosen->user;
         $user->delete();
         $dosen->delete();

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Mahasiswa;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use RealRashid\SweetAlert\Facades\Alert;
 
 class MahasiswaController extends Controller
@@ -24,7 +25,7 @@ class MahasiswaController extends Controller
     {
         $validated = $request->validate([
             'nama' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
+            'email' => 'required',
             'password' => 'required',
             'nim' => 'required|string|max:20|unique:mahasiswa,nim',
             'alamat' => 'required',
@@ -88,6 +89,9 @@ class MahasiswaController extends Controller
 
     public function destroy(Mahasiswa $mahasiswa)
     {
+        if ($mahasiswa->mahasiswa_id) {
+            Storage::delete($mahasiswa->mahasiswa_id);
+        }
         $user = $mahasiswa->user;
         $user->delete();
         $mahasiswa->delete();

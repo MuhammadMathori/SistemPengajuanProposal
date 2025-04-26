@@ -12,7 +12,7 @@ class Mahasiswa extends Model
     use HasFactory, SoftDeletes;
 
     protected $table = 'mahasiswa';
-    protected $keyType = 'string'; // Karena UUID
+    protected $keyType = 'string';
     public $incrementing = false;
 
     protected $fillable = [
